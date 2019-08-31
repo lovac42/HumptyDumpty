@@ -2,7 +2,7 @@
 # Copyright 2019 Lovac42
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
 # Support: https://github.com/lovac42/HumptyDumpty
-# Version: 0.0.1
+# Version: 0.0.2
 
 
 # Anki maps button2 to good for learning cards on V1.
@@ -25,7 +25,7 @@
 
 # Turn this off if you don't want your grades merged.
 
-MERGE_AND_REMAP_BUTTONS = True  #Anki's Default Setting
+MERGE_AND_REMAP_BUTTONS = False  #Anki's Default is True
 
 # Setting this to false will also allow you to switch
 # between V1 and V2 without screwing up your stats.
@@ -110,3 +110,16 @@ where queue in (1,3) and type in (2,3)
 # ========= Wrap ================
 schedv2.Scheduler.moveToV1 = moveToV1
 schedv2.Scheduler.moveToV2 = moveToV2
+
+
+
+
+# ========= GUI ================
+import aqt.preferences
+from anki.lang import _
+from anki.hooks import wrap
+
+def setupUi(self, Preferences):
+    self.newSched.setText(_("Experimental V2 scheduler (Patched)"))
+
+aqt.forms.preferences.Ui_Preferences.setupUi = wrap(aqt.forms.preferences.Ui_Preferences.setupUi, setupUi, "after")
