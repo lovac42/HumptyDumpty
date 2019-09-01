@@ -1,4 +1,5 @@
-## Humpty Dumpty: Convert V1-V2; Keep learning cards intact
+# Humpty Dumpty
+Convert between V1-V2; Keep learning cards intact (except filtered decks in V1)
 
 ## About:
 This addon converts between V1 and V2 while keeping learning cards intact. There should be no problems upgrading from V1 to V2, however, downgrading back to V1 from V2 requires some missing values to be recalculated.
@@ -13,3 +14,8 @@ It turns out that V2 has poor support for apkg with scheduling info. A user is a
 
 ## Instruction:
 Preferences > Experimental V2 scheduler
+
+
+## Filtered Decks in V1:
+Filtered decks are emptied first before converting to V2. In V1, all learning cards in a filtered deck will loose their learning status when returning to the original deck.
+

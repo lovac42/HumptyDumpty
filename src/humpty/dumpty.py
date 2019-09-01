@@ -43,8 +43,10 @@ from anki.utils import intTime
 
 
 def moveToV1(sched):
-    mw.col.clearUndo() #for old versions of anki before 2.1.16
+    # For old versions of anki before 2.1.16
+    mw.col.clearUndo()
 
+    # All cards return to their original deck
     sched._emptyAllFiltered()
 
     # Change type 3 to 2, recalculate odue
@@ -57,6 +59,7 @@ def moveToV1(sched):
     # WARNING: Learning status is lost for suspended cards.
     sched._resetSuspendedLearning()
 
+    # Anki defaults to True
     if MERGE_AND_REMAP_BUTTONS:
         # This migrates btn4 to btn3.
         # It condenses btn3 with btn2!!
@@ -65,13 +68,17 @@ def moveToV1(sched):
 
 
 def moveToV2(sched):
-    mw.col.clearUndo() #for old versions of anki before 2.1.16
+    # For old versions of anki before 2.1.16
+    mw.col.clearUndo()
 
+    # Learning cards in V1 filtered decks will
+    # loose their learning status.
     sched._emptyAllFiltered()
 
     # Change type 2 to 3, remove odue
     updateAllFromLearning(sched, toSchedVer=1)
 
+    # Anki defaults to True
     if MERGE_AND_REMAP_BUTTONS:
         #This migrates btn2 to btn3, and 3 to 4
         sched._remapLearningAnswers("ease=ease+1 where ease in (2,3)")
