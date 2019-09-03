@@ -2,7 +2,7 @@
 # Copyright 2019 Lovac42
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
 # Support: https://github.com/lovac42/HumptyDumpty
-# Version: 0.0.2
+# Version: 0.0.3
 
 
 # Anki maps button2 to good for learning cards on V1.
@@ -14,8 +14,8 @@
 
 # For alternative schedulers addons such as:
 # Plan9, Plan0, or PimsEmu, they are mapped correctly to
-# 4 buttons. So this screws up the stats for alternative
-# schedulers, as it merges hard with good grades.
+# 4 buttons. So this remapping screws up the stats for
+# alternative schedulers, as it merges hard with good grades.
 
 # If you are using mixed schedulers, like I do,
 # you'll need to separate and export each deck into
@@ -63,7 +63,7 @@ def moveToV1(sched):
     if MERGE_AND_REMAP_BUTTONS:
         # This migrates btn4 to btn3.
         # It condenses btn3 with btn2!!
-        # If you also have btn2 data, they are lost.
+        # If you also have btn2 data, they are merged with btn3.
         sched._remapLearningAnswers("ease=ease-1 where ease in (3,4)")
 
 
@@ -71,6 +71,7 @@ def moveToV2(sched):
     # For old versions of anki before 2.1.16
     mw.col.clearUndo()
 
+    # Warning:
     # Learning cards in V1 filtered decks will
     # loose their learning status.
     sched._emptyAllFiltered()
@@ -80,7 +81,7 @@ def moveToV2(sched):
 
     # Anki defaults to True
     if MERGE_AND_REMAP_BUTTONS:
-        #This migrates btn2 to btn3, and 3 to 4
+        #This migrates btn2 to btn3, and btn3 to btn4
         sched._remapLearningAnswers("ease=ease+1 where ease in (2,3)")
 
 
@@ -127,6 +128,8 @@ from anki.lang import _
 from anki.hooks import wrap
 
 def setupUi(self, Preferences):
-    self.newSched.setText(_("Experimental V2 scheduler (Patched)"))
+    msg="Experimental V2 scheduler \
+[button_remap = %s]"%MERGE_AND_REMAP_BUTTONS
+    self.newSched.setText(_(msg))
 
 aqt.forms.preferences.Ui_Preferences.setupUi = wrap(aqt.forms.preferences.Ui_Preferences.setupUi, setupUi, "after")
