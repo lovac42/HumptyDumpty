@@ -14,11 +14,14 @@ from anki.storage import Collection
 
 
 class Test:
+    STATE_FINISHED = -1
+
     def reset(self):
         self.state = 0
 
     def setTestState(self, s):
-        self.state = s
+        if self.state != self.STATE_FINISHED:
+            self.state = s
 
 
 run_test = Test()
@@ -39,7 +42,7 @@ def testWrap():
         v2_sched.moveToV2()
         assert run_test.state == 2, "The addon HumptyDumpty was not patched correctly. Error code 2"
 
-        run_test.setTestState(-1) #for pref menu
+        run_test.setTestState(run_test.STATE_FINISHED) #for pref menu
         # print("HumptyDumpty was patched correctly.")
 
     finally:

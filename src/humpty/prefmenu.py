@@ -14,7 +14,7 @@ from .dumpty import conf
 
 def setupUi(self, Preferences):
     msg = self.newSched.text()
-    if run_test.state != -1:
+    if run_test.state != run_test.STATE_FINISHED:
         msg += "  [ADDON ERROR]"
     else:
         tf = conf.get("merge_and_remap_stat_buttons", True)
