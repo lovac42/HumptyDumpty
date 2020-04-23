@@ -1,5 +1,5 @@
 # Humpty Dumpty
-Convert between V1 and V2 but keep learning cards intact.  
+Keeps learning cards status while converting between V1-V2 or importing apkgs.
 
 (Except filtered decks in V1)
 

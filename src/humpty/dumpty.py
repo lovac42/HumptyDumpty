@@ -10,11 +10,14 @@ from anki.utils import intTime
 
 from .const import ADDON_NAME
 from .config import Config
+from .self_tests import run_test
 
 conf = Config(ADDON_NAME)
 
 
 def moveToV1(sched):
+    run_test.setTestState(1)
+
     # For old versions of anki before 2.1.16
     mw.col.clearUndo()
 
@@ -22,7 +25,7 @@ def moveToV1(sched):
     sched._emptyAllFiltered()
 
     # Change type 3 to 2, recalculate odue
-    updateAllFromLearning(sched, toSchedVer=2)
+    _updateAllFromLearning(sched, toSchedVer=2)
 
     # Convert queue -3 to -2
     sched._moveManuallyBuried()
@@ -39,6 +42,8 @@ def moveToV1(sched):
 
 
 def moveToV2(sched):
+    run_test.setTestState(2)
+
     # For old versions of anki before 2.1.16
     mw.col.clearUndo()
 
@@ -48,7 +53,7 @@ def moveToV2(sched):
     sched._emptyAllFiltered()
 
     # Change type 2 to 3, remove odue
-    updateAllFromLearning(sched, toSchedVer=1)
+    _updateAllFromLearning(sched, toSchedVer=1)
 
     if conf.get("merge_and_remap_stat_buttons", True):
         #This migrates btn2 to btn3, and btn3 to btn4
@@ -56,7 +61,7 @@ def moveToV2(sched):
 
 
 
-def updateAllFromLearning(sched, toSchedVer=2):
+def _updateAllFromLearning(sched, toSchedVer=2):
     """
         Converts type 2 to type 3
         V2 sets odue = 0

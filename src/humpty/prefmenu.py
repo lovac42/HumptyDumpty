@@ -8,13 +8,17 @@ import aqt.preferences
 from anki.lang import _
 from anki.hooks import wrap
 
+from .self_tests import run_test
 from .dumpty import conf
 
 
 def setupUi(self, Preferences):
     msg = self.newSched.text()
-    tf = conf.get("merge_and_remap_stat_buttons", True)
-    msg += "  [button_remap = %s]" % tf
+    if run_test.state != -1:
+        msg += "  [ADDON ERROR]"
+    else:
+        tf = conf.get("merge_and_remap_stat_buttons", True)
+        msg += "  [button_remap = %s]" % tf
     self.newSched.setText(_(msg))
 
 
