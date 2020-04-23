@@ -4,6 +4,9 @@
 # Support: https://github.com/lovac42/HumptyDumpty
 
 
-from .lib.com.lovac42.anki.others import safety_first
+import os
+ADDON_PATH = os.path.dirname(__file__)
 
-from . import dumpty
+ADDON_NAME = "HumptyDumpty"
+
+TARGET_STABLE_VERSION = 23
