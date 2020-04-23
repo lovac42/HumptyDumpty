@@ -7,3 +7,4 @@
 from .lib.com.lovac42.anki.others import safety_first
 
 from . import dumpty
+from . import prefmenu

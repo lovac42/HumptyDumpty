@@ -2,44 +2,16 @@
 # Copyright 2019-2020 Lovac42
 # License: GNU AGPL, version 3 or later; http://www.gnu.org/licenses/agpl.html
 # Support: https://github.com/lovac42/HumptyDumpty
-# Version: 0.0.3
-
-
-# Anki maps button2 to good for learning cards on V1.
-# On V2, button2 is mapped to hard.
-
-# If you are playing around switching back and forth
-# between V1 and V2, V2 and V1, then your buttons
-# are merged into one big stack.
-
-# For alternative schedulers addons such as:
-# Plan9, Plan0, or PimsEmu, they are mapped correctly to
-# 4 buttons. So this remapping screws up the stats for
-# alternative schedulers, as it merges hard with good grades.
-
-# If you are using mixed schedulers, like I do,
-# you'll need to separate and export each deck into
-# separate profiles, upgrade each separately, then
-# import these decks back into one.
-
-
-# Turn this off if you don't want your grades merged.
-
-MERGE_AND_REMAP_BUTTONS = False  #Anki's Default is True
-
-# Setting this to false will also allow you to switch
-# between V1 and V2 without screwing up your stats.
-# But when you are ready to make the switch
-# and you are not using alternative schedulers,
-# make sure to turn this back on.
-
-
-
 
 
 from anki import schedv2
 from aqt import mw
 from anki.utils import intTime
+
+from .const import ADDON_NAME
+from .config import Config
+
+conf = Config(ADDON_NAME)
 
 
 def moveToV1(sched):
@@ -59,8 +31,7 @@ def moveToV1(sched):
     # WARNING: Learning status is lost for suspended cards.
     sched._resetSuspendedLearning()
 
-    # Anki defaults to True
-    if MERGE_AND_REMAP_BUTTONS:
+    if conf.get("merge_and_remap_stat_buttons", True):
         # This migrates btn4 to btn3.
         # It condenses btn3 with btn2!!
         # If you also have btn2 data, they are merged with btn3.
@@ -79,8 +50,7 @@ def moveToV2(sched):
     # Change type 2 to 3, remove odue
     updateAllFromLearning(sched, toSchedVer=1)
 
-    # Anki defaults to True
-    if MERGE_AND_REMAP_BUTTONS:
+    if conf.get("merge_and_remap_stat_buttons", True):
         #This migrates btn2 to btn3, and btn3 to btn4
         sched._remapLearningAnswers("ease=ease+1 where ease in (2,3)")
 
@@ -116,20 +86,7 @@ where queue in (1,3) and type in (2,3)
 
 
 # ========= Wrap ================
+
+# Using assignment instead of wrap to prevent unknown conflicts.
 schedv2.Scheduler.moveToV1 = moveToV1
 schedv2.Scheduler.moveToV2 = moveToV2
-
-
-
-
-# ========= GUI ================
-import aqt.preferences
-from anki.lang import _
-from anki.hooks import wrap
-
-def setupUi(self, Preferences):
-    msg="Experimental V2 scheduler \
-[button_remap = %s]"%MERGE_AND_REMAP_BUTTONS
-    self.newSched.setText(_(msg))
-
-aqt.forms.preferences.Ui_Preferences.setupUi = wrap(aqt.forms.preferences.Ui_Preferences.setupUi, setupUi, "after")
